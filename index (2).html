@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Calculadora Crédito Vehicular </title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 500px;
+      margin: 40px auto;
+      background: #f7f7f7;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+    }
+    th, td {
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Crédito Vehicular autofinanciera </h2>
+  
+  <label for="monto">Monto del crédito ($):</label>
+  <input type="number" id="monto" value="1000000">
+
+  <table>
+    <tr><th>Concepto</th><th>Valor</th></tr>
+    <tr><td>Cuota mensual</td><td id="cuotaMensual">$0</td></tr>
+    <tr><td>Inscripción</td><td id="inscripcion">$0</td></tr>
+    <tr><td>Primer pago</td><td id="primerPago">$0</td></tr>
+    <tr><td>Total final</td><td id="totalFinal">$0</td></tr>
+  </table>
+
+  <script>
+    const plazo = 72;
+    const adminPct = 0.15;
+    const inscripcionPct = 0.036;
+
+    function formatear(valor) {
+      return "$" + valor.toLocaleString("es-CO", { minimumFractionDigits: 0 });
+    }
+
+    function calcular() {
+      const monto = parseFloat(document.getElementById("monto").value);
+
+      if (isNaN(monto) || monto <= 0) return;
+
+      const cuotaBase = monto / plazo;
+      const admin = cuotaBase * adminPct;
+      const cuotaMensual = cuotaBase + admin;
+
+      const inscripcion = monto * inscripcionPct;
+      const primerPago = cuotaMensual + inscripcion;
+      const totalFinal = cuotaMensual * plazo + inscripcion;
+
+      document.getElementById("cuotaMensual").textContent = formatear(cuotaMensual);
+      document.getElementById("inscripcion").textContent = formatear(inscripcion);
+      document.getElementById("primerPago").textContent = formatear(primerPago);
+      document.getElementById("totalFinal").textContent = formatear(totalFinal);
+    }
+
+    document.getElementById("monto").addEventListener("input", calcular);
+    window.onload = calcular;
+  </script>
+
+</body>
+</html>
